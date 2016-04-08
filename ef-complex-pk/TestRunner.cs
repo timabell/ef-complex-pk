@@ -14,13 +14,15 @@ namespace ef_complex_pk
             using (var context = new TestDbContext())
             {
                 const string widgetName = "fred";
-                context.Widgets.Add(new Widget {WidgetId = 1, Name = widgetName});
+                const int widgetId = 5;
+                context.Widgets.Add(new Widget {WidgetId = widgetId, Name = widgetName});
                 context.SaveChanges();
 
                 var uberWidget = context.Database
                     .SqlQuery<UberWidget>("select WidgetId, Name from Widgets")
                     .First();
 
+                Assert.AreEqual(widgetId, uberWidget.UberWidgetId);
                 Assert.AreEqual(widgetName, uberWidget.Name);
             }
         }
