@@ -11,7 +11,11 @@ namespace ef_complex_pk
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.ComplexType<IdWrap>();
+
             //modelBuilder.Entity<Widget>().HasKey(e => e.WidgetId);
+
+            // doesn't work because it pulls the uberwiget in and barfs on lack of key, back to square one.
+            //modelBuilder.Entity<UberWidget>().Property(e => e.UberWidgetId.IdWrapId).HasColumnName("WidgetId");
         }
     }
 
