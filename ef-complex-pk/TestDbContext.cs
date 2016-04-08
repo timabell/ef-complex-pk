@@ -15,7 +15,8 @@ namespace ef_complex_pk
 
     public class Widget
     {
-        public IdWrap WidgetId { get; set; }
+        public int WidgetId { get; set; }
+        public IdWrap WidgetId2 { get; set; }
         public string Name { get; set; }
     }
 
