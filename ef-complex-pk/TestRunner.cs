@@ -19,7 +19,7 @@ namespace ef_complex_pk
                 context.SaveChanges();
 
                 var uberWidget = context.Database
-                    .SqlQuery<UberWidget>("select WidgetId, Name from Widgets")
+                    .SqlQuery<UberWidget>("select WidgetId as UberWidgetId_IdWrapId, Name from Widgets")
                     .First();
 
                 Assert.AreEqual(widgetId, uberWidget.UberWidgetId);
