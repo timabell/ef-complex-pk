@@ -13,17 +13,22 @@ namespace ef_complex_pk
             Database.SetInitializer(new DropCreateDatabaseAlways<TestDbContext>());
             using (var context = new TestDbContext())
             {
-                const string widgetName = "fred";
-                const int widgetId = 5;
-                context.Widgets.Add(new Widget {WidgetId = widgetId, Name = widgetName});
+                // avoid #1 in the generated db ids to make tests fail if they end up with default int value by adding an extra record first
+                context.Widgets.Add(new Widget { Name = "bob" });
                 context.SaveChanges();
 
-                var uberWidget = context.Database
-                    .SqlQuery<UberWidget>("select WidgetId as UberWidgetId_IdWrapId, Name from Widgets")
-                    .First();
+                const string widgetName = "fred";
+                var insertedWidget = new Widget { Name = widgetName };
+                context.Widgets.Add(insertedWidget);
+                context.SaveChanges();
+                var insertedWidgetId = insertedWidget.WidgetId;
+                Assert.AreEqual(2, insertedWidgetId);
 
-                Assert.AreEqual(widgetId, uberWidget.UberWidgetId);
-                Assert.AreEqual(widgetName, uberWidget.Name);
+                var uberWidgets = context.GetUberWidgets().ToList();
+                var fredWidget = uberWidgets.Single(w => w.UberWidgetId.IdWrapId == 2);
+
+                Assert.AreEqual(widgetName, fredWidget.Name);
+                Assert.AreEqual(insertedWidgetId, fredWidget.UberWidgetId.IdWrapId);
             }
         }
     }
