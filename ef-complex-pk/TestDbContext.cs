@@ -5,6 +5,7 @@ namespace ef_complex_pk
     public class TestDbContext: DbContext
     {
         public IDbSet<Widget> Widgets { get; set; }
+        public IDbSet<Frobnitzer> Frobnitzers { get; set; }
         // no IDbSet for UberWidgets as you can't have a complex type as a PK in ef
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -20,6 +21,16 @@ namespace ef_complex_pk
     public class Widget
     {
         public int WidgetId { get; set; }
+        public string Name { get; set; }
+    }
+
+    /// <summary>
+    /// just to see what ef generates as a default table structure
+    /// </summary>
+    public class Frobnitzer
+    {
+        public int Id { get; set; }
+        public IdWrap ComplexPropIdWrap { get; set; }
         public string Name { get; set; }
     }
 
