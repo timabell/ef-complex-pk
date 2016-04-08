@@ -31,7 +31,7 @@ namespace ef_complex_pk
             return Database.SqlQuery<WidgetSqlDto>("select WidgetId, Name from Widgets")
                 .Select(dto => new UberWidget
                 {
-                    UberWidgetId = new IdWrap {},// IdWrapId = dto.WidgetId },
+                    UberWidgetId = new IdWrap(dto.WidgetId),
                     Name = dto.Name
                 });
         }
@@ -73,10 +73,11 @@ namespace ef_complex_pk
 
     public class IdWrap
     {
-        public int IdWrapId
+        public IdWrap(int id)
         {
-            get { return 4; }
-            protected set { }
+            IdWrapId = id;
         }
+
+        public int IdWrapId { get; protected set; }
     }
 }
